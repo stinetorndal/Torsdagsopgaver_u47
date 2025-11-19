@@ -1,0 +1,77 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+abstract class Item {
+ - String id;
+ - String name;
+ - LocalDate priceDate;
+ - int quantity;
+ - String unit;
+
+ + double abstract          getPrice()
+ + String toString()
+ }
+ class DiscountedItems{
+ - double price;
+ - double discountPrice;
+ + getDiscountPercentage()
+ + getDiscountAmount()
+ }
+ class  NormalItems{
+ - double  price;
+  + getPrice()
+ + String toString()
+ }
+
+class ShoppingCart {
+ - items: Map<String, CartItem>
+ + addItem (Item: item)
+ + getItem () : Collection<CartItem>
+ + isEmpty(): boolean
+ }
+
+class CartItem {
+Item: item;
+int quantity;
++getTotal () double
+}
+class Receipt{
+- List <receiptLine> : lines
+- double total
+- double VAT;
++String toString()
+}
+class ReceiptLine{
+- String itemName;
+- double priceNormal
+- double actualPrice
+- int quantity
+- double total
+- double discountAmount
+}
+class CashRegister{
+- itemRepository: repo
++ receipt scanCart()
++ calculateVAT() double
+}
+class ItemRepository{
+- Map <String, Item>: Items
+ - Map <String, Item>: discountedItems
+ + loadItem ()
+ + loadDiscountedItems()
+ + getItems(id)
+ + boolean onOffer()
+}
+Item <|-- NormalItems
+Item <|-- DiscountedItems
+ShoppingCart --> CartItem
+Receipt --> ReceiptLine
+CashRegister --> Receipt
+ItemRepository --> Item
+CashRegister --> ItemRepository
+CartItem --> Item
+ReceiptLine --> Item
+
+
+
+@enduml
