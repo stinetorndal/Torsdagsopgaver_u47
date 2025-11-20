@@ -1,19 +1,13 @@
-    package flow;
+package flow;
 
 public class NormalItem extends Item {
-    private double price;
 
-    public NormalItem(String id, String name, double price) {
-        super(id, name, null, 0, null);
-        this.price = price;
+    public NormalItem(String name, double price, boolean isBudgetBrand, int quantity, String unit) {
+        super(name, price, isBudgetBrand, quantity, unit);
     }
 
     @Override
-    public double getPrice() {
-        return price;
-    }
-
-    public String toString (){
-        return super.toString() + " - " + price + " kr";
+    public String toString() {
+        return super.toString();
     }
 }

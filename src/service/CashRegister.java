@@ -23,10 +23,10 @@ public class CashRegister {
             if (item instanceof DiscountedItems) {
                 DiscountedItems d = (DiscountedItems) item;
                 normalPrice = d.getNormalPrice();
-                actualPrice = d.getPrice(); // kunden betaler tilbudsprisen
+                actualPrice = d.getNormalprice(); // kunden betaler tilbudsprisen
             } else {
-                normalPrice = item.getPrice();
-                actualPrice = item.getPrice();
+                normalPrice = item.getNormalprice();
+                actualPrice = item.getNormalprice();
             }
 
             // Lav en linje på bonen

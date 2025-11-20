@@ -1,31 +1,19 @@
 package flow;
 
 public class DiscountedItems extends Item {
-    private double price;
-    private double discountPrice;
+    private double normalPrice;
 
-
-    public DiscountedItems(String id, String name, double price, double discountPrice) {
-        super(id, name, null, 0, null);
-        this.price = price;
-        this.discountPrice = discountPrice;
+    public DiscountedItems(String name, double price, double normalPrice, boolean isBudgetBrand, int quantity, String unit) {
+        super(name, price, isBudgetBrand, quantity, unit);
+        this.normalPrice = normalPrice;
     }
 
-        @Override
-        public double getPrice() {
-            return price;
-        }
     public double getNormalPrice() {
-        return price;
+        return normalPrice;
     }
 
-    public double getDiscountPrice() {
-        return price - discountPrice;
+    @Override
+    public String toString() {
+        return super.toString() + " | Normalpris: " + normalPrice;
     }
-
-    public String toString (){
-            return super.toString() + " - " + discountPrice + " kr (normal: " + price + ")";
-        }
-    }
-
-
+}
