@@ -1,81 +1,107 @@
 @startuml
-'https://plantuml.com/class-diagram
-class main {
-+load items()
-+create shoppingcart()
-print receipt
-}
+
 abstract class Item {
- - String id;
- - String name;
- - LocalDate priceDate;
- - int quantity;
- - String unit;
+    - String name
+    - double price
+    - int quantity
+    - boolean isBudgetBrand
+    - String unit
+    + getName(): String
+    + getNormalprice(): double
+    + getQuantity(): int
+    + isBudgetBrand(): boolean
+    + getUnit(): String
+    + toString(): String
+}
 
- + double abstract          getPrice()
- + String toString()
- }
- class DiscountedItems{
- - double price;
- - double discountPrice;
- + getDiscountPercentage()
- + getDiscountAmount()
- }
- class  NormalItems{
- - double  price;
-  + getPrice()
- + String toString()
- }
+class NormalItem {
+    + NormalItem(name, price, isBudgetBrand, quantity, unit)
+    + String toString()
+}
 
-class ShoppingCart {
- - items: Map<String, CartItem>
- + addItem (Item: item)
- + getItem () : Collection<CartItem>
- + isEmpty(): boolean
- }
+class DiscountedItems {
+    - double normalPrice
+    + getNormalPrice(): double
+    + toString(): String
+}
+
+Item <|-- NormalItem
+Item <|-- DiscountedItems
 
 class CartItem {
-Item: item;
-int quantity;
-+getTotal () double
+    - Item : item
+    - int quantity
+    + getTotal(): double
+    + addQuantity(q: int)
+    + getItem(): Item
+    + getQuantity(): int
 }
-class Receipt{
-- List <receiptLine> : lines
-- double total
-- double VAT;
-+String toString()
-}
-class ReceiptLine{
-- String itemName;
-- double priceNormal
-- double actualPrice
-- int quantity
-- double total
-- double discountAmount
-}
-class CashRegister{
-- ItemRepository: repo
-+ receipt scanCart()
-+ calculateVAT() double
-}
-class ItemRepository{
-- Map <String, Item>: Items
- - Map <String, Item>: discountedItems
- + loadItem ()
- + loadDiscountedItems()
- + getItems(id)
- + boolean onOffer()
-}
-Item <|-- NormalItems
-Item <|-- DiscountedItems
-ShoppingCart --> CartItem
-Receipt --> ReceiptLine
-CashRegister --> Receipt
-ItemRepository --> Item
-CashRegister --> ItemRepository
-CartItem --> Item
-ReceiptLine --> Item
 
+class ShoppingCart {
+    - Map<String, CartItem> : items
+    + addItem(item: Item, quantity: int)
+    + getItems(): Collection<CartItem>
+    + isEmpty(): boolean
+}
 
+ShoppingCart "1" *-- "*" CartItem
+CartItem "1" --> "1" Item
+
+class ReceiptLine {
+    - String itemName
+    - double normalPrice
+    - double actualPrice
+    - int quantity
+    - double total
+    - double discount
+    + getTotal(): double
+    + getItemName(): String
+    + getQuantity(): int
+    + getDiscount(): double
+    + toString(): String
+}
+
+class Receipt {
+    - List<ReceiptLine> : lines
+    - double total
+    - double VAT
+    + addLine(line: ReceiptLine)
+    + calculateVAT(rate: double)
+    + String toString()
+}
+
+Receipt "1" *-- "*" ReceiptLine
+
+class TextUI {
+    - Scanner scanner
+    + welcome()
+    + askHowManyItems(): int
+    + showCart(cart: ShoppingCart)
+    + askToPay(): boolean
+    + showReceipt(receipt: Receipt)
+}
+
+class ItemRepository {
+    + loadItems(normalPath: String, discountedPath: String): List<Item>
+    - loadCsv(path: String, discounted: boolean): List<Item>
+}
+
+class Shop {
+    + generateRandomCart(items: List<Item>, count: int): ShoppingCart
+}
+
+class CashRegister {
+    - double VAT_RATE = 0.25
+    + scanCart(cart: ShoppingCart): Receipt
+}
+
+class Main {
+    + main()
+}
+
+Main --> TextUI
+Main --> ItemRepository
+Main --> Shop
+Main --> CashRegister
 
 @enduml
