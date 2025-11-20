@@ -1,6 +1,10 @@
 @startuml
 'https://plantuml.com/class-diagram
-
+class main {
++load items()
++create shoppingcart()
+print receipt
+}
 abstract class Item {
  - String id;
  - String name;
@@ -50,7 +54,7 @@ class ReceiptLine{
 - double discountAmount
 }
 class CashRegister{
-- itemRepository: repo
+- ItemRepository: repo
 + receipt scanCart()
 + calculateVAT() double
 }
