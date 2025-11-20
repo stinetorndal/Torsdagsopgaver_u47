@@ -17,6 +17,7 @@ public class TextUI {
         System.out.println("Hvor mange varer vil du købe i dag?  (max 15)");
         int count = scanner.nextInt();
         scanner.nextLine();
+        //------Der kan max være 15 varer i kurven totalt------
         if (count > 15) count = 15;
         if (count < 1) count = 1;
         return count;
