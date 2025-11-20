@@ -21,7 +21,8 @@ public class ItemRepository {
     private List<Item> loadCsv(String path, boolean discounted) {
         List<Item> list = new ArrayList<>();
         try (Scanner sc = new Scanner(new File(path))) {
-            if (sc.hasNextLine()) sc.nextLine(); // spring header
+            //------springe header over i csv------
+            if (sc.hasNextLine()) sc.nextLine();
 
             while (sc.hasNextLine()) {
                 String line = sc.nextLine().trim();
@@ -29,11 +30,11 @@ public class ItemRepository {
 
                 String[] t = line.split(";");
 
-                // tjek at vi har nok kolonner
+                //------check om der er kolonner nok------
                 if (t.length < 7) continue;
 
                 try {
-                    // Læs kun de kolonner, vi skal bruge
+                    //------her er kun de kolonner i csv jeg har valgt at bruge------
                     String name = t[1].trim();
                     double price = Double.parseDouble(t[3].trim());
                     boolean isBudget = Boolean.parseBoolean(t[4].trim());
@@ -45,9 +46,9 @@ public class ItemRepository {
                     } else {
                         list.add(new NormalItem(name, price, isBudget, quantity, unit));
                     }
-
+                    //-----springer over hvis der er fejl i linjen------
                 } catch (Exception ignored) {
-                    // hvis der er fejl i linjen, spring bare over
+
                 }
             }
         } catch (Exception e) {
